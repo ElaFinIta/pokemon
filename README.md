@@ -21,7 +21,7 @@ Get 20 Pokemons at a time from the API. Next and prev buttons perform a new call
 ## Screenshot:
 
 Version 1:
-![screenshot](Screenshot.png?raw=true "Screenshot of the first version of Pokédex app")
+![screenshot](screenshot.png?raw=true "Screenshot of the first version of Pokédex app")
 
 ## To do:
 - [ ] compute weak against based on type

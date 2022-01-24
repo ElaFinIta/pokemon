@@ -28,4 +28,6 @@ Version 1:
 
 ## Credits:
 - Pokemon API: https://pokeapi.co/api/v2/pokemon/ 
+- picture by <a href="https://unsplash.com/@thimo?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Thimo Pedersen</a> on <a href="https://unsplash.com/s/photos/pokemon?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  
 - Teacher Margit Tennosaat at BCH

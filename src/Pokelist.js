@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Loader from './Loader';
 import axios from "axios";
 import PokeCard from './PokeCard';
+import './index.css';
 
 
 const API = 'https://pokeapi.co/api/v2/pokemon/';
@@ -36,6 +37,24 @@ const Pokelist = () => {
       }
     });
   }
+
+  // const getMargitsPokemons = () => {
+  //   axios.get(next).catch(error => {
+  //     console.log(error);
+  //   }).then(res => {
+  //     const fetches = res.data.results.map(p => {
+  //       axios.get(p.url).then(res => res.data)
+  //     });
+
+  //     setNext(res.data.next);
+
+  //     Promise.all(fetches).then(data => {
+  //       setPokemons(prevState => [...prevState, ...data]);
+  //       setIsLoading(false);
+  //     })
+  //   })
+  // }
+
   return (
     <div>
       <Container>

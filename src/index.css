@@ -8,3 +8,13 @@
     list-style: none;
     display: inline;
 }
+
+main {
+    height: calc(100vh - 56px);
+}
+
+.hero {
+    background: url('./background.jpg') no-repeat fixed center center/cover;
+    height: 100%;
+    color: white;
+}

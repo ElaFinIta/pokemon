@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter,
   Routes,
@@ -8,15 +8,43 @@ import Pokelist from './Pokelist';
 import Layout from './Layout';
 import Home from './Home';
 import './index.css';
+import PokeSingle from './PokeSingle';
+import FavList from './FavList';
 
 
 const App = () => {
+  const [favourites, setFavourites] = useState([]);
+
+  const getArray = JSON.parse(localStorage.getItem('favourites'))
+
+  useEffect(() => {
+      setFavourites(getArray)
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('favourites', JSON.stringify(favourites))
+  }, [favourites]);
+
+  const favHandler = (pokemon) => {
+    let item = favourites.some(item => item.id === pokemon.id);
+
+    if (!item) {
+      setFavourites(favourites => [...favourites, pokemon])
+    } else {
+      const newArray = [...favourites];
+      newArray.splice(newArray.findIndex(item => item.id === pokemon.id), 1);
+      setFavourites(newArray);
+    }
+  };
+
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Layout />}>
-          <Route path='/' element={<Home />} />
-          <Route path='/pokelist' element={<Pokelist/>} />
+          <Route index element={<Home />} />
+          <Route path='pokelist' element={<Pokelist favHandler={favHandler} favourites={favourites}/>} />
+          <Route path='/:pokemonName' element={<PokeSingle />} />
+          <Route path='favourites' element={<FavList favHandler={favHandler} favourites={favourites}/>} />
         </Route>
       </Routes>
     </BrowserRouter>

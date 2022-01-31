@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-
 import PokeCard from "./PokeCard";
 import Loader from "./Loader";
 import { Button } from "react-bootstrap";
 
-const PokeList = () => {
+const PokeList = ({ favHandler, favourites }) => {
   const [pokemons, setPokemons] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [nextPokemons, setNextPokemons] = useState(
@@ -36,8 +34,8 @@ const PokeList = () => {
           setPokemons((prevState) => [...prevState, ...data]);
         });
         setIsLoading(false);
-        console.log(pokemons);
-        console.log(nextPokemons);
+        // console.log(pokemons);
+        // console.log(nextPokemons);
       });
   };
 
@@ -57,6 +55,9 @@ const PokeList = () => {
                 key={pokemon.name}
                 name={pokemon.name}
                 image={pokemon.sprites.other.dream_world.front_default}
+                pokemonName={pokemon.name}
+                fav={favourites.some(item => item.name === pokemon.name)}
+                favClick={() => favHandler(pokemon)}
               />
             ))}
         </Row>

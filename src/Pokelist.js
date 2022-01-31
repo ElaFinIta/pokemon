@@ -1,78 +1,71 @@
-import React, { useState, useEffect } from 'react';
-import Row from 'react-bootstrap/Row';
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Loader from './Loader';
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import PokeCard from './PokeCard';
-import './index.css';
 
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
 
-const API = 'https://pokeapi.co/api/v2/pokemon/';
+import PokeCard from "./PokeCard";
+import Loader from "./Loader";
+import { Button } from "react-bootstrap";
 
-const Pokelist = () => {
-  const [isLoading, setIsLoading] = useState(true);
+const PokeList = () => {
   const [pokemons, setPokemons] = useState([]);
-  const [next, setNext] = useState();
-  const [topLeftPoke, setTopLeftPoke] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [nextPokemons, setNextPokemons] = useState(
+    "https://pokeapi.co/api/v2/pokemon?limit=50&offset=0"
+  );
 
   useEffect(() => {
-    getPokemons(API);
+    getPokemons();
   }, []);
 
-  const getPokemons = (endpoint) => {
-    setIsLoading(false);
-    axios.get(endpoint)
+  const getPokemons = () => {
+    axios
+      .get(nextPokemons)
+      .catch((error) => {
+        console.log(error);
+      })
       .then((res) => {
-        setNext(res.data.next);
-        const fetches = res.data.results.map((poke) =>
-          axios.get(poke.url).then((singlePokeRes) => singlePokeRes.data)
+        const fetches = res.data.results.map((p) =>
+          axios.get(p.url).then((res) => res.data)
         );
-      Promise.all(fetches).then((data) => {
-        setPokemons(data);
+
+        setNextPokemons(res.data.next);
+
+        Promise.all(fetches).then((data) => {
+          setPokemons((prevState) => [...prevState, ...data]);
+        });
         setIsLoading(false);
+        console.log(pokemons);
+        console.log(nextPokemons);
       });
-      if (pokemons[0]) {
-        setTopLeftPoke(pokemons[0].id);
-      }
-    });
-  }
-
-  // const getMargitsPokemons = () => {
-  //   axios.get(next).catch(error => {
-  //     console.log(error);
-  //   }).then(res => {
-  //     const fetches = res.data.results.map(p => {
-  //       axios.get(p.url).then(res => res.data)
-  //     });
-
-  //     setNext(res.data.next);
-
-  //     Promise.all(fetches).then(data => {
-  //       setPokemons(prevState => [...prevState, ...data]);
-  //       setIsLoading(false);
-  //     })
-  //   })
-  // }
+  };
 
   return (
     <div>
       <Container>
-        <Row xs={1}
-            md={3} 
-            lg={5} 
-            className="justify-content-between my-5 d-flex gap-3"
+        <Row
+          xs={2}
+          md={4}
+          lg={5}
+          className="justify-content-between my-5 d-flex gap-3"
         >
-          {isLoading && <Loader /> }
-          {!isLoading && pokemons.map((poke) => (
-            <PokeCard poke={poke} key={poke.id}/>))}
+          {isLoading && <Loader />}
+          {!isLoading &&
+            pokemons.map((pokemon) => (
+              <PokeCard
+                key={pokemon.name}
+                name={pokemon.name}
+                image={pokemon.sprites.other.dream_world.front_default}
+              />
+            ))}
         </Row>
-        {/* {next !== 'https://pokeapi.co/api/v2/pokemon/?offset=20&limit=20' ? <Button variant="info" onClick={() => getPokemons(`https://pokeapi.co/api/v2/pokemon/?offset=${topLeftPoke-1}&limit=20`)}>PREV</Button> : undefined} */}
-        {topLeftPoke > 1 ? <Button variant="info" onClick={() => getPokemons(`https://pokeapi.co/api/v2/pokemon/?offset=${topLeftPoke-21}&limit=20`)}>PREV</Button> : undefined}
-        {next !== 'https://pokeapi.co/api/v2/pokemon/?offset=1100&limit=18' ?<Button variant="info" onClick={() => getPokemons(next)}>NEXT</Button> : undefined}
       </Container>
+      <Button variant="primary" size="lg" onClick={getPokemons}>
+        Load more
+      </Button>
     </div>
   );
 };
 
-export default Pokelist;
+export default PokeList;

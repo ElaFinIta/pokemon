@@ -55,8 +55,9 @@ const PokeList = ({ favHandler, favourites }) => {
                 key={pokemon.name}
                 name={pokemon.name}
                 image={pokemon.sprites.other.dream_world.front_default}
+                // {pokemon.sprites.other.home.front_default}
                 pokemonName={pokemon.name}
-                fav={favourites.some(item => item.name === pokemon.name)}
+                fav={favourites ? favourites.some(item => item.name === pokemon.name): 'favourites is empy'}
                 favClick={() => favHandler(pokemon)}
               />
             ))}

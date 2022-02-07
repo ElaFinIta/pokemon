@@ -37,6 +37,13 @@ const App = () => {
     }
   };
 
+  const emptyFavourites = () => {
+    if (favourites) {
+      localStorage.removeItem('favourites');
+      setFavourites([]);
+    }
+  }
+
   return (
     <BrowserRouter>
       <Routes>
@@ -44,7 +51,7 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path='pokelist' element={<Pokelist favHandler={favHandler} favourites={favourites}/>} />
           <Route path='/:pokemonName' element={<PokeSingle />} />
-          <Route path='favourites' element={<FavList favHandler={favHandler} favourites={favourites}/>} />
+          <Route path='favourites' element={<FavList emptyFav={emptyFavourites} favHandler={favHandler} favourites={favourites}/>} />
         </Route>
       </Routes>
     </BrowserRouter>

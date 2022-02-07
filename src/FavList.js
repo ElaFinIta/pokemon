@@ -1,8 +1,10 @@
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import PokeCard from "./PokeCard";
+import { Button } from "react-bootstrap";
 
-const FavList = ({favHandler, favourites, }) => {
+const FavList = ({favHandler, favourites, emptyFav }) => {
+
     return (
         <div>
         <Container>
@@ -18,11 +20,14 @@ const FavList = ({favHandler, favourites, }) => {
                   name={pokemon.name}
                   image={pokemon.sprites.other.dream_world.front_default}
                   pokemonName={pokemon.name}
-                  fav={favourites.some(item => item.name === pokemon.name)}
+                  fav={favourites ? favourites.some(item => item.name === pokemon.name): 'favourites is empty'}
                   favClick={() => favHandler(pokemon)}
                 />
               ))}
           </Row>
+          <Button variant="primary" size="lg" onClick={emptyFav}>
+        Remove all favourites
+        </Button>
         </Container>
       </div>
     );
